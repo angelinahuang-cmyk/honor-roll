@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>全校借閱榮譽榜輪播系統</title>
+    <style>
+		body, html {
+			margin: 0;
+			padding: 0;
+			height: 100%;
+			width: 100%;
+			overflow: hidden;
+			background-color: #f0f0f0;
+		}
+		#display-frame {
+			width: 100vw;
+			height: 100vh;
+			border: none;
+			display: block;
+		}
+    </style>
+</head>
+<body>
+	<iframe id="display-frame" src="index01.html"></iframe>
+	<script src="config.js"></script>
+	<script>
+		const pages = ['index01.html', 'index02.html', 'index03.html']; (typeof carouselConfig !== 'undefined') ? carouselConfig.pages : ['index01.html', 'index02.html', 'index03.html'];
+		let currentIndex = 0;
+		const frame = document.getElementById('display-frame');
+		function switchPage() {
+			if (pages.length === 0) return;
+			frame.src = pages[currentIndex]+ "?t=" + new Date().getTime();
+			console.log("正在播放：" + pages[currentIndex]);
+			currentIndex = (currentIndex + 1) % pages.length;
+		}
+		switchPage();
+		setInterval(switchPage, 10000); 
+	</script>
+</body>
+</html>

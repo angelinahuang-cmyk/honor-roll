@@ -1,0 +1,134 @@
+@charset "UTF-8";
+/* CSS Document */
+body{
+	background-color: #ee87b4;
+	margin: 0;
+	padding: 0;
+}
+#main-wrapper{
+	width: 100%;
+	padding: 20px 0;
+}
+#container{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+.banner{
+	display: flex;
+    justify-content: center; /* 水平置中 */
+    align-items: center;     /* 垂直置中 (選用) */
+	margin: 50px;
+}
+.toy1{
+	background-size: cover;
+    background-position: center;
+	position: relative;
+    width: 80%;
+	margin: 100px;
+	left: -7%;
+}
+.toy1 .textfeild:nth-child(1) {
+    align-self: flex-end;    /* 靠右對齊 */
+	margin: 0 15%;
+	/* 讓方框透明並隱藏 */
+    background: transparent;    /* 背景透明 */
+    border: none;               /* 移除邊框 */
+    outline: none;              /* 點擊時也不要出現藍色外框 */
+    /* 文字樣式調整 */
+    font-size: 50px;            /* 放大文字大小，可依需求調整數值 */
+    font-weight: bold;          /* 加粗字體，讓它更明顯 */
+    color: #000000;                /* 設定文字顏色，確保在粉紅背景上清楚 */
+    /* 置中文字 */
+    text-align: center;
+}
+.toy1 .textfeild:nth-child(2) {
+    align-self: flex-start;
+    margin-left: 20%;
+	margin-top: 5%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 50px;
+    font-weight: bold;
+    color: #000000;
+    text-align: center;
+}
+.toy2{
+	background-size: cover;
+    background-position: center;
+	position: relative;
+    width: 55%;
+	left: 35%;
+	margin-top: -250px;
+}
+.toy2 .textfeild{
+	align-self: flex-end;
+    margin-right: 50%;
+	margin-top: 25%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 50px;
+    font-weight: bold;
+    color: #000000;
+    text-align: center;
+}
+.toy3{
+	background-size: cover;
+    background-position: center;
+	position: relative;
+    width: 80%;
+	margin: 100px;
+	left: -10%;
+}
+.toy3 .textfeild{
+	align-self: flex-start;
+    margin-left: 60%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 50px;
+    font-weight: bold;
+    color: #000000;
+    text-align: center;
+}
+.toy4{
+	background-size: cover;
+    background-position: center;
+	position: relative;
+    width: 50%;
+	margin: 100px;
+	left: 35%;
+}
+.toy4 .textfeild{
+	align-self: flex-start;
+    margin-left: 30%;
+	margin-top: -5%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 50px;
+    font-weight: bold;
+    color: #000000;
+    text-align: center;
+}
+.input-overlay{
+	position: absolute; /* 關鍵：絕對定位 */
+    top: 0;             /* 從頂部開始算 */
+    left: 0;            /* 從左邊開始算 */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around; /* 讓方框均勻分佈在圖片高度上 */
+    align-items: center;
+}
+.textfeild{
+	width: 30%;        /* 縮小寬度以符合數字旁的空間 */
+    height: 200px;      /* 調整高度 */
+    background: white;
+	border: none;
+}
