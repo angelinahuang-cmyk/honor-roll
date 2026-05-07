@@ -6,6 +6,20 @@
 	<link href="style.css" rel="stylesheet">
 </head>
 	<body id="main-wrapper">
+		<script>
+    // 監聽整個頁面的點擊事件
+    document.addEventListener("click", function() {
+        var doc = window.document;
+        var docEl = doc.documentElement;
+
+        // 定義開啟全螢幕的函式
+        var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+
+        if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+            requestFullScreen.call(docEl);
+        }
+    });
+</script>
 		<div id="container">
 			<header>
 				<div class="banner"><img src="瑞埔冒險家.png" width="50%" height="auto" alt=""/></div>
