@@ -12,31 +12,48 @@
 			overflow: hidden;
 			background-color: #f0f0f0;
 		}
-		#display-frame {
+		/* 讓所有 iframe 都填滿螢幕，預設先全部隱藏 */
+		.display-frame {
 			width: 100vw;
 			height: 100vh;
 			border: none;
+			display: none; 
+		}
+		/* 被加上 active 類別 class 的 iframe 才會顯示出來 */
+		.active {
 			display: block;
 		}
     </style>
 </head>
 <body>
-	<iframe id="display-frame" src="index01.html" allow="fullscreen" allowfullscreen="true"></iframe>
+
+	<!-- 1. 我們一口氣把三個頁面都當作獨立的「圖層」疊在一起 -->
+	<iframe id="frame0" class="display-frame active" src="index01.html" allow="fullscreen" allowfullscreen="true"></iframe>
+	<iframe id="frame1" class="display-frame" src="index02.html" allow="fullscreen" allowfullscreen="true"></iframe>
+	<iframe id="frame2" class="display-frame" src="index03.html" allow="fullscreen" allowfullscreen="true"></iframe>
     
 	<script src="config.js"></script>
 	<script>
-		const pages = ['index01.html', 'index02.html', 'index03.html'];
+		// 這裡對應上面三個 iframe 的 ID 後綴數字
 		let currentIndex = 0;
-		const frame = document.getElementById('display-frame');
+		const totalPages = 3; 
         
 		function switchPage() {
-			if (pages.length === 0) return;
-			frame.src = pages[currentIndex] + "?t=" + new Date().getTime();
-			console.log("正在播放：" + pages[currentIndex]);
-			currentIndex = (currentIndex + 1) % pages.length;
+			// 1. 先把所有 iframe 的顯示狀態（active）拿掉，讓大家都隱藏
+			for (let i = 0; i < totalPages; i++) {
+				document.getElementById('frame' + i).classList.remove('active');
+			}
+			
+			// 2. 只讓當前該輪到的那個 iframe 顯示出來
+			document.getElementById('frame' + currentIndex).classList.add('active');
+			
+			console.log("正在播放第 " + (currentIndex + 1) + " 個頁面");
+			
+			// 3. 計算下一次要播哪一頁
+			currentIndex = (currentIndex + 1) % totalPages;
 		}
         
-        // 2. 修改：將全螢幕監聽寫在最外層，並確保它不會被子網頁重載干擾
+        // 全螢幕監聽：點擊畫面任何地方進入全螢幕
         document.addEventListener("click", function() {
             var docEl = document.documentElement;
             var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
@@ -46,8 +63,8 @@
             }
         });
 
-		switchPage();
-		setInterval(switchPage, 30000); // 每30秒自動切換，外殼完全不動，因此不會退出全螢幕
+		// 開始循環播放
+		setInterval(switchPage, 10000); // 每 10 秒換一頁
 	</script>
 </body>
 </html>
