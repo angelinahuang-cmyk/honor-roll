@@ -27,14 +27,12 @@
 </head>
 <body>
 
-	<!-- 1. 我們一口氣把三個頁面都當作獨立的「圖層」疊在一起 -->
 	<iframe id="frame0" class="display-frame active" src="index01.html" allow="fullscreen" allowfullscreen="true"></iframe>
 	<iframe id="frame1" class="display-frame" src="index02.html" allow="fullscreen" allowfullscreen="true"></iframe>
 	<iframe id="frame2" class="display-frame" src="index03.html" allow="fullscreen" allowfullscreen="true"></iframe>
     
 	<script src="config.js"></script>
 	<script>
-		// 這裡對應上面三個 iframe 的 ID 後綴數字
 		let currentIndex = 0;
 		const totalPages = 3; 
         
@@ -44,12 +42,12 @@
 				document.getElementById('frame' + i).classList.remove('active');
 			}
 			
-			// 2. 只讓當前該輪到的那個 iframe 顯示出來
+			// 2. 讓目前輪到的那個 iframe 顯示出來
 			document.getElementById('frame' + currentIndex).classList.add('active');
 			
 			console.log("正在播放第 " + (currentIndex + 1) + " 個頁面");
 			
-			// 3. 計算下一次要播哪一頁
+			// 3. 準備下一次要播的頁面索引
 			currentIndex = (currentIndex + 1) % totalPages;
 		}
         
@@ -63,8 +61,11 @@
             }
         });
 
-		// 開始循環播放
-		setInterval(switchPage, 10000); // 每 10 秒換一頁
+		// 【修正關鍵】先執行一次換頁設定，讓初始的 currentIndex 往下推進到 1
+		switchPage(); 
+
+		// 開始循環播放，每 10 秒執行一次
+		setInterval(switchPage, 10000); 
 	</script>
 </body>
 </html>
