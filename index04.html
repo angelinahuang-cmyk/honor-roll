@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>全校借閱榮譽榜輪播系統</title>
+    <title>全校借閱榮譽榜輪榜系統</title>
     <style>
 		body, html {
 			margin: 0;
@@ -12,22 +12,26 @@
 			overflow: hidden;
 			background-color: #f0f0f0;
 		}
-		/* 讓所有 iframe 都填滿螢幕，預設先全部隱藏 */
+		/* 所有 iframe 的預設樣式：填滿螢幕並隱藏 */
 		.display-frame {
 			width: 100vw;
 			height: 100vh;
 			border: none;
+			position: absolute; /* 使用絕對定位疊在一起 */
+			top: 0;
+			left: 0;
 			display: none; 
 		}
-		/* 被加上 active 類別 class 的 iframe 才會顯示出來 */
+		/* 只有被加上 active 的圖層才會顯示，並確保置頂 */
 		.active {
 			display: block;
+			z-index: 10;
 		}
     </style>
 </head>
 <body>
 
-	<iframe id="frame0" class="display-frame active" src="index01.html" allow="fullscreen" allowfullscreen="true"></iframe>
+	<iframe id="frame0" class="display-frame" src="index01.html" allow="fullscreen" allowfullscreen="true"></iframe>
 	<iframe id="frame1" class="display-frame" src="index02.html" allow="fullscreen" allowfullscreen="true"></iframe>
 	<iframe id="frame2" class="display-frame" src="index03.html" allow="fullscreen" allowfullscreen="true"></iframe>
     
@@ -37,17 +41,24 @@
 		const totalPages = 3; 
         
 		function switchPage() {
-			// 1. 先把所有 iframe 的顯示狀態（active）拿掉，讓大家都隱藏
+			console.log("準備切換，當前索引值為：" + currentIndex);
+
+			// 1. 先把所有人身上的 active 類別都拔掉（全部隱藏）
 			for (let i = 0; i < totalPages; i++) {
-				document.getElementById('frame' + i).classList.remove('active');
+				var el = document.getElementById('frame' + i);
+				if (el) {
+					el.classList.remove('active');
+				}
 			}
 			
-			// 2. 讓目前輪到的那個 iframe 顯示出來
-			document.getElementById('frame' + currentIndex).classList.add('active');
+			// 2. 顯示現在應該播放的這一頁
+			var currentEl = document.getElementById('frame' + currentIndex);
+			if (currentEl) {
+				currentEl.classList.add('active');
+				console.log("成功顯示第 " + (currentIndex + 1) + " 個頁面：" + currentEl.src);
+			}
 			
-			console.log("正在播放第 " + (currentIndex + 1) + " 個頁面");
-			
-			// 3. 準備下一次要播的頁面索引
+			// 3. 計算下一次要播放的頁面索引
 			currentIndex = (currentIndex + 1) % totalPages;
 		}
         
@@ -61,10 +72,10 @@
             }
         });
 
-		// 【修正關鍵】先執行一次換頁設定，讓初始的 currentIndex 往下推進到 1
+		// 網頁一載入，立刻先執行第一次換頁（顯示第 1 頁，並把索引推向第 2 頁）
 		switchPage(); 
 
-		// 開始循環播放，每 10 秒執行一次
+		// 設定每 10 秒鐘（10000 毫秒）切換一次
 		setInterval(switchPage, 10000); 
 	</script>
 </body>
