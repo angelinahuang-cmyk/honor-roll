@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>全校借閱榮譽榜輪播系統</title>
+    <title>全校借閱榮譽榜輪榜系統</title>
     <style>
 		body, html {
 			margin: 0;
@@ -12,31 +12,57 @@
 			overflow: hidden;
 			background-color: #f0f0f0;
 		}
-		#display-frame {
+		/* 所有 iframe 的預設樣式：填滿螢幕並隱藏 */
+		.display-frame {
 			width: 100vw;
 			height: 100vh;
 			border: none;
+			position: absolute; /* 使用絕對定位疊在一起 */
+			top: 0;
+			left: 0;
+			display: none; 
+		}
+		/* 只有被加上 active 的圖層才會顯示，並確保置頂 */
+		.active {
 			display: block;
+			z-index: 10;
 		}
     </style>
 </head>
 <body>
-	<iframe id="display-frame" src="index01.html" allow="fullscreen" allowfullscreen="true"></iframe>
+
+	<iframe id="frame0" class="display-frame" src="index01.html" allow="fullscreen" allowfullscreen="true"></iframe>
+	<iframe id="frame1" class="display-frame" src="index02.html" allow="fullscreen" allowfullscreen="true"></iframe>
+	<iframe id="frame2" class="display-frame" src="index03.html" allow="fullscreen" allowfullscreen="true"></iframe>
     
 	<script src="config.js"></script>
 	<script>
-		const pages = ['index01.html', 'index02.html', 'index03.html'];
 		let currentIndex = 0;
-		const frame = document.getElementById('display-frame');
+		const totalPages = 3; 
         
 		function switchPage() {
-			if (pages.length === 0) return;
-			frame.src = pages[currentIndex] + "?t=" + new Date().getTime();
-			console.log("正在播放：" + pages[currentIndex]);
-			currentIndex = (currentIndex + 1) % pages.length;
+			console.log("準備切換，當前索引值為：" + currentIndex);
+
+			// 1. 先把所有人身上的 active 類別都拔掉（全部隱藏）
+			for (let i = 0; i < totalPages; i++) {
+				var el = document.getElementById('frame' + i);
+				if (el) {
+					el.classList.remove('active');
+				}
+			}
+			
+			// 2. 顯示現在應該播放的這一頁
+			var currentEl = document.getElementById('frame' + currentIndex);
+			if (currentEl) {
+				currentEl.classList.add('active');
+				console.log("成功顯示第 " + (currentIndex + 1) + " 個頁面：" + currentEl.src);
+			}
+			
+			// 3. 計算下一次要播放的頁面索引
+			currentIndex = (currentIndex + 1) % totalPages;
 		}
         
-        // 2. 修改：將全螢幕監聽寫在最外層，並確保它不會被子網頁重載干擾
+        // 全螢幕監聽：點擊畫面任何地方進入全螢幕
         document.addEventListener("click", function() {
             var docEl = document.documentElement;
             var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
@@ -46,8 +72,11 @@
             }
         });
 
-		switchPage();
-		setInterval(switchPage, 10000); // 每10秒自動切換，外殼完全不動，因此不會退出全螢幕
+		// 網頁一載入，立刻先執行第一次換頁（顯示第 1 頁，並把索引推向第 2 頁）
+		switchPage(); 
+
+		// 設定每 10 秒鐘（10000 毫秒）切換一次
+		setInterval(switchPage, 10000); 
 	</script>
 </body>
 </html>
