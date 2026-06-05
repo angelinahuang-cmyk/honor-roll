@@ -21,34 +21,33 @@
     </style>
 </head>
 <body>
-	<script>
-    // 監聽整個頁面的點擊事件
-    document.addEventListener("click", function() {
-        var doc = window.document;
-        var docEl = doc.documentElement;
-
-        // 定義開啟全螢幕的函式
-        var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-
-        if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-            requestFullScreen.call(docEl);
-        }
-    });
-</script>
-	<iframe id="display-frame" src="index01.html"></iframe>
+	<iframe id="display-frame" src="index01.html" allow="fullscreen" allowfullscreen="true"></iframe>
+    
 	<script src="config.js"></script>
 	<script>
-		const pages = ['index01.html', 'index02.html', 'index03.html']; (typeof carouselConfig !== 'undefined') ? carouselConfig.pages : ['index01.html', 'index02.html', 'index03.html'];
+		const pages = ['index01.html', 'index02.html', 'index03.html'];
 		let currentIndex = 0;
 		const frame = document.getElementById('display-frame');
+        
 		function switchPage() {
 			if (pages.length === 0) return;
-			frame.src = pages[currentIndex]+ "?t=" + new Date().getTime();
+			frame.src = pages[currentIndex] + "?t=" + new Date().getTime();
 			console.log("正在播放：" + pages[currentIndex]);
 			currentIndex = (currentIndex + 1) % pages.length;
 		}
+        
+        // 2. 修改：將全螢幕監聽寫在最外層，並確保它不會被子網頁重載干擾
+        document.addEventListener("click", function() {
+            var docEl = document.documentElement;
+            var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+            
+            if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+                requestFullScreen.call(docEl);
+            }
+        });
+
 		switchPage();
-		setInterval(switchPage, 10000);
+		setInterval(switchPage, 30000); // 每30秒自動切換，外殼完全不動，因此不會退出全螢幕
 	</script>
 </body>
 </html>
